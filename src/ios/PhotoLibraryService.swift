@@ -358,11 +358,21 @@ final class PhotoLibraryService {
                     return
                 }
 
-                let imageData = PhotoLibraryService.image2PictureData(image, quality: 1.0)
+                let newimage = self.fixedOrientation(image: image)
+                let imageData = PhotoLibraryService.image2PictureData(newimage, quality: 1.0)
 
                 completion(imageData)
             }
         })
+    }
+
+    func fixedOrientation(image: UIImage) -> UIImage {
+
+        UIGraphicsBeginImageContextWithOptions(image.size, false, image.scale)
+        image.draw(in: CGRect(origin: .zero, size: image.size))
+        let newImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        return newImage!
     }
     
     
